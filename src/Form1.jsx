@@ -2,18 +2,18 @@ import { Alert, Button } from "react-bootstrap";
 import Form from "react-bootstrap/Form";
 import InputGroup from "react-bootstrap/InputGroup";
 import { useFormik } from "formik";
+import { useState } from "react";
 
 const initialValues = {
   userName: "",
   userDescription: "",
   userType: "",
-  userIndian: false,
-  checkbox: [],
   range: "",
   date: "",
 };
 
 function Form1() {
+  const [values, setValues] = useState({});
   const validate = (values) => {
     console.log("validate" + JSON.stringify(values, null, 1));
     const errors = {};
@@ -30,10 +30,15 @@ function Form1() {
     if (!values.date) {
       errors.date = "Select Date";
     }
+    const num = /^[0-9]+$/;
+    if (!num.test(values.range)) {
+      errors.range = "Only Numbers Allowed";
+    }
     return errors;
   };
   const onSubmit = (values) => {
     console.log("submit" + JSON.stringify(values, null, 1));
+    setValues(values);
     sampleForm.resetForm();
   };
   const sampleForm = useFormik({ initialValues, validate, onSubmit });
@@ -94,47 +99,6 @@ function Form1() {
           <Alert variant="info">{sampleForm.errors.userType}</Alert>
         )}
 
-        <InputGroup className="mb-3">
-          <Form.Check
-            type="switch"
-            id="custom-switch"
-            label="Indian?"
-            name="userIndian"
-            onChange={sampleForm.handleChange}
-            onBlur={sampleForm.handleBlur}
-            value={sampleForm.values.userIndian}
-          />
-        </InputGroup>
-        <Form.Check
-          inline
-          label="1"
-          name="checkbox"
-          type="checkbox"
-          id={`inline-checkbox-1`}
-          onChange={sampleForm.handleChange}
-          onBlur={sampleForm.handleBlur}
-          value="first box"
-        />
-        <Form.Check
-          inline
-          label="2"
-          name="checkbox"
-          type="checkbox"
-          id={`inline-checkbox-2`}
-          onChange={sampleForm.handleChange}
-          onBlur={sampleForm.handleBlur}
-          value="second box"
-        />
-        <Form.Check
-          inline
-          label="3"
-          name="checkbox"
-          type="checkbox"
-          id={`inline-checkbox-3`}
-          onChange={sampleForm.handleChange}
-          onBlur={sampleForm.handleBlur}
-          value="third box"
-        />
         <Form.Label>Range</Form.Label>
         <Form.Range
           name="range"
@@ -148,6 +112,7 @@ function Form1() {
         <InputGroup className="mb-3">
           <InputGroup.Text id="basic-addon1">@</InputGroup.Text>
           <Form.Control
+            type="number"
             placeholder={sampleForm.values.range}
             aria-label="Username"
             aria-describedby="basic-addon1"
@@ -157,6 +122,9 @@ function Form1() {
             value={sampleForm.values.range}
           />
         </InputGroup>
+        {sampleForm.touched.range && sampleForm.errors.range && (
+          <Alert variant="info">{sampleForm.errors.range}</Alert>
+        )}
         <input
           type="date"
           className="form-control mb-3"
@@ -169,11 +137,33 @@ function Form1() {
           <Alert variant="info">{sampleForm.errors.date}</Alert>
         )}
         <div className="d-grid gap-2">
-          <Button type="submit" variant="info">
+          <Button
+            type="submit"
+            variant="info"
+            disabled={!(sampleForm.isValid && sampleForm.dirty)}
+          >
             Submit
           </Button>
         </div>
       </form>
+      <table className="table table-bordered mt-3">
+        <thead>
+          <tr>
+            {Object.keys(initialValues).map((k, index) => (
+              <th key={index}>{k}</th>
+            ))}
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>{values.userName}</td>
+            <td>{values.userDescription}</td>
+            <td>{values.userType}</td>
+            <td>{values.range}</td>
+            <td>{values.date}</td>
+          </tr>
+        </tbody>
+      </table>
     </>
   );
 }
