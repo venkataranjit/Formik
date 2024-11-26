@@ -3,18 +3,18 @@ import Form from "react-bootstrap/Form";
 import InputGroup from "react-bootstrap/InputGroup";
 import { useFormik } from "formik";
 import * as Yup from "yup";
+import { useState } from "react";
 
 const initialValues = {
   userName: "",
   userDescription: "",
   userType: "",
-  userIndian: false,
-  checkbox: [],
   range: "",
   date: "",
 };
 
 function Form4() {
+  const [values, setValues] = useState({});
   const validationSchema = Yup.object({
     userName: Yup.string()
       .required("Enter Any Name")
@@ -22,21 +22,18 @@ function Form4() {
       .max(10, "Max 10 Characters"),
     userDescription: Yup.string().required("Description Required"),
     userType: Yup.string().required("select any one"),
-    userIndian: Yup.string().required("check"),
-    checkbox: Yup.array()
-      .min(1, "Check at least one")
-      .required("Check at least one"),
     date: Yup.string().required("select any Date"),
   });
   const onSubmit = (values) => {
     console.log("submit" + JSON.stringify(values, null, 1));
+    setValues(values);
     sampleForm.resetForm();
   };
   const sampleForm = useFormik({ initialValues, validationSchema, onSubmit });
   console.log(sampleForm);
   return (
     <>
-      <h4>useFormik</h4>
+      <h4>useFormik with Yup Validations</h4>
 
       <form onSubmit={sampleForm.handleSubmit}>
         <InputGroup className="mb-3">
@@ -91,51 +88,6 @@ function Form4() {
           <Alert variant="info">{sampleForm.errors.userType}</Alert>
         )}
 
-        <InputGroup className="mb-3">
-          <Form.Check
-            type="switch"
-            id="custom-switch"
-            label="Indian?"
-            name="userIndian"
-            onChange={sampleForm.handleChange}
-            onBlur={sampleForm.handleBlur}
-            value={sampleForm.values.userIndian}
-          />
-        </InputGroup>
-        <Form.Check
-          inline
-          label="1"
-          name="checkbox"
-          type="checkbox"
-          id={`inline-checkbox-1`}
-          onChange={sampleForm.handleChange}
-          onBlur={sampleForm.handleBlur}
-          value="first box"
-        />
-        <Form.Check
-          inline
-          label="2"
-          name="checkbox"
-          type="checkbox"
-          id={`inline-checkbox-2`}
-          onChange={sampleForm.handleChange}
-          onBlur={sampleForm.handleBlur}
-          value="second box"
-        />
-        <Form.Check
-          inline
-          label="3"
-          name="checkbox"
-          type="checkbox"
-          id={`inline-checkbox-3`}
-          onChange={sampleForm.handleChange}
-          onBlur={sampleForm.handleBlur}
-          value="third box"
-        />
-        {sampleForm.touched.checkbox && sampleForm.errors.checkbox && (
-          <Alert variant="info">{sampleForm.errors.checkbox}</Alert>
-        )}
-        <br />
         <Form.Label>Range</Form.Label>
         <Form.Range
           name="range"
@@ -170,11 +122,33 @@ function Form4() {
           <Alert variant="info">{sampleForm.errors.date}</Alert>
         )}
         <div className="d-grid gap-2">
-          <Button type="submit" variant="info">
+          <Button
+            type="submit"
+            variant="info"
+            disabled={!(sampleForm.dirty && sampleForm.isValid)}
+          >
             Submit
           </Button>
         </div>
       </form>
+      <table className="table table-bordered mt-3">
+        <thead>
+          <tr>
+            {Object.keys(initialValues).map((k, index) => (
+              <th key={index}>{k}</th>
+            ))}
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>{values.userName}</td>
+            <td>{values.userDescription}</td>
+            <td>{values.userType}</td>
+            <td>{values.range}</td>
+            <td>{values.date}</td>
+          </tr>
+        </tbody>
+      </table>
     </>
   );
 }

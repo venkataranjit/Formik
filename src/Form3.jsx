@@ -1,4 +1,5 @@
 import { Formik, Form, Field } from "formik";
+import { useState } from "react";
 import { Alert, Button } from "react-bootstrap";
 import * as Yup from "yup";
 
@@ -9,6 +10,7 @@ const initialValues = {
 };
 
 const Form3 = () => {
+  const [val, setVal] = useState({});
   const validationSchema = Yup.object({
     userName: Yup.string().required("enter any name"),
     email: Yup.string().email("Invalid Format").required("Email required"),
@@ -16,7 +18,7 @@ const Form3 = () => {
   });
   const handleSubmit = (values, { resetForm }) => {
     console.log(values);
-
+    setVal(values);
     resetForm();
   };
   return (
@@ -62,6 +64,22 @@ const Form3 = () => {
           );
         }}
       </Formik>
+      <table className="table table-bordered mt-3">
+        <thead>
+          <tr>
+            {Object.keys(initialValues).map((k, index) => (
+              <th key={index}>{k}</th>
+            ))}
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>{val.userName}</td>
+            <td>{val.email}</td>
+            <td>{val.description}</td>
+          </tr>
+        </tbody>
+      </table>
     </>
   );
 };
