@@ -14,11 +14,17 @@ function NavBar() {
             <Nav.Link as={NavLink} to="/">
               Home
             </Nav.Link>
-            <Nav.Link as={NavLink} to="/basicForm">
-              Form
+            <Nav.Link as={NavLink} to="/form1">
+              useFormik
             </Nav.Link>
             <Nav.Link as={NavLink} to="/form2">
-              Form 2
+              Formik Component
+            </Nav.Link>
+            <Nav.Link as={NavLink} to="/form3">
+              Yup Validation for Components
+            </Nav.Link>
+            <Nav.Link as={NavLink} to="/form4">
+              Yup Validation for useFormik
             </Nav.Link>
           </Nav>
         </Navbar.Collapse>
