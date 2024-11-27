@@ -1,6 +1,4 @@
-import { Alert, Button } from "react-bootstrap";
-import Form from "react-bootstrap/Form";
-import InputGroup from "react-bootstrap/InputGroup";
+import { Alert } from "react-bootstrap";
 import { useFormik } from "formik";
 import { useState } from "react";
 
@@ -48,59 +46,57 @@ function Form1() {
       <h4>useFormik</h4>
 
       <form onSubmit={sampleForm.handleSubmit}>
-        <InputGroup className="mb-3">
-          <InputGroup.Text id="basic-addon1">@</InputGroup.Text>
-          <Form.Control
-            placeholder="Username"
-            aria-label="Username"
-            aria-describedby="basic-addon1"
-            name="userName"
-            onChange={sampleForm.handleChange}
-            onBlur={sampleForm.handleBlur}
-            value={sampleForm.values.userName}
-          />
-        </InputGroup>
+        <input
+          className="form-control mb-3"
+          type="text"
+          placeholder="Username"
+          aria-label="Username"
+          aria-describedby="basic-addon1"
+          name="userName"
+          onChange={sampleForm.handleChange}
+          onBlur={sampleForm.handleBlur}
+          value={sampleForm.values.userName}
+        />
+
         {sampleForm.touched.userName && sampleForm.errors.userName && (
           <Alert variant="info">{sampleForm.errors.userName}</Alert>
         )}
 
-        <InputGroup className="mb-3">
-          <InputGroup.Text>With textarea</InputGroup.Text>
-          <Form.Control
-            as="textarea"
-            aria-label="With textarea"
-            name="userDescription"
-            onChange={sampleForm.handleChange}
-            onBlur={sampleForm.handleBlur}
-            value={sampleForm.values.userDescription}
-          />
-        </InputGroup>
+        <textarea
+          className="form-control mb-3"
+          aria-label="With textarea"
+          name="userDescription"
+          onChange={sampleForm.handleChange}
+          onBlur={sampleForm.handleBlur}
+          value={sampleForm.values.userDescription}
+        />
+
         {sampleForm.touched.userDescription &&
           sampleForm.errors.userDescription && (
             <Alert variant="info">{sampleForm.errors.userDescription}</Alert>
           )}
 
-        <InputGroup className="mb-3">
-          <InputGroup.Text id="basic-addon1">@</InputGroup.Text>
-          <Form.Select
-            aria-label="Default select example"
-            name="userType"
-            onChange={sampleForm.handleChange}
-            onBlur={sampleForm.handleBlur}
-            value={sampleForm.values.userType}
-          >
-            <option value="">Open this select menu</option>
-            <option value="1">One</option>
-            <option value="2">Two</option>
-            <option value="3">Three</option>
-          </Form.Select>
-        </InputGroup>
+        <select
+          className="form-control mb-3"
+          aria-label="Default select example"
+          name="userType"
+          onChange={sampleForm.handleChange}
+          onBlur={sampleForm.handleBlur}
+          value={sampleForm.values.userType}
+        >
+          <option value="">Open this select menu</option>
+          <option value="1">One</option>
+          <option value="2">Two</option>
+          <option value="3">Three</option>
+        </select>
+
         {sampleForm.touched.userType && sampleForm.errors.userType && (
           <Alert variant="info">{sampleForm.errors.userType}</Alert>
         )}
 
-        <Form.Label>Range</Form.Label>
-        <Form.Range
+        <input
+          type="range"
+          className="form-control mb-3"
           name="range"
           value={sampleForm.values.range}
           min={10}
@@ -109,19 +105,7 @@ function Form1() {
           onChange={sampleForm.handleChange}
           onBlur={sampleForm.handleBlur}
         />
-        <InputGroup className="mb-3">
-          <InputGroup.Text id="basic-addon1">@</InputGroup.Text>
-          <Form.Control
-            type="number"
-            placeholder={sampleForm.values.range}
-            aria-label="Username"
-            aria-describedby="basic-addon1"
-            name="range"
-            onChange={sampleForm.handleChange}
-            onBlur={sampleForm.handleBlur}
-            value={sampleForm.values.range}
-          />
-        </InputGroup>
+
         {sampleForm.touched.range && sampleForm.errors.range && (
           <Alert variant="info">{sampleForm.errors.range}</Alert>
         )}
@@ -137,13 +121,14 @@ function Form1() {
           <Alert variant="info">{sampleForm.errors.date}</Alert>
         )}
         <div className="d-grid gap-2">
-          <Button
+          <button
+            className="btn btn-info"
             type="submit"
             variant="info"
             disabled={!(sampleForm.isValid && sampleForm.dirty)}
           >
             Submit
-          </Button>
+          </button>
         </div>
       </form>
       <table className="table table-bordered mt-3">
